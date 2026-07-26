@@ -11,12 +11,11 @@ class Shop extends Model
     public function getShopInfo()
     {
         $shop_info = $this->first();
-        $shop_info->hotline = $this->formatPhoneNumber($shop_info->hotline);
         return $shop_info;
 
     }
 
-    function formatPhoneNumber(string $phone): string
+    public static function formatPhoneNumber(string $phone): string
     {
         $phone = preg_replace('/\D/', '', $phone); // Chỉ giữ số
 

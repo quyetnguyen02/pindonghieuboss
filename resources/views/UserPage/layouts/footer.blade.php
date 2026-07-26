@@ -14,7 +14,7 @@
 
             <p>
                 <strong>Hotline:</strong>
-                {{$shop->hotline}}
+                {{\App\Models\Shop::formatPhoneNumber($shop->hotline)}}
             </p>
 
             <p>
@@ -94,7 +94,7 @@
 
 <div class="floating-contact">
     <a
-        href="{{'https://zalo.me/' . $shop->hotline}}"
+        href="{{'https://zalo.me/' . $shop->zalo}}"
         target="_blank"
         class="contact-btn zalo">
 
