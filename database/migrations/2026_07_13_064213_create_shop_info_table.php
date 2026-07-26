@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('logo')->nullable();   // Logo
             $table->string('address')->nullable();            // Địa chỉ
             $table->string('hotline', 20)->nullable();        // Hotline
+            $table->string('zalo', 20)->nullable();        // Zalo
             $table->string('email')->nullable();  // Email
             $table->string('fanpage')->nullable(); // Link Fanpage
             $table->timestamps();
