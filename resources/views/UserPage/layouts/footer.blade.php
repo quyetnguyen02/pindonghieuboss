@@ -93,18 +93,23 @@
 </footer>
 
 <div class="floating-contact">
-    <a
-        href="{{'https://zalo.me/' . $shop->zalo}}"
-        target="_blank"
-        class="contact-btn zalo">
+    @if($shop->zalo)
+        <a
+            href="{{'https://zalo.me/' . $shop->zalo}}"
+            target="_blank"
+            class="contact-btn zalo">
 
-        <img src="{{asset('image/logo/zalo.svg')}}" alt="Zalo">
+            <img src="{{asset('image/logo/zalo.svg')}}" alt="Zalo">
 
-    </a>
+        </a>
+    @endif
 
-    <a
-        href="{{'tel:' . $shop->hotline}}"
-        class="contact-btn phone">
-        <i class="fa-solid fa-phone"></i>
-    </a>
+    @if($shop->hotline)
+        <a
+            href="{{'tel:' . $shop->hotline}}"
+            class="contact-btn phone">
+            <i class="fa-solid fa-phone"></i>
+        </a>
+    @endif
+
 </div>
