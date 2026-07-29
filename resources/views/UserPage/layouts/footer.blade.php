@@ -113,3 +113,72 @@
     @endif
 
 </div>
+
+<!-- Button báo giá -->
+<button class="quote-btn" id="openQuote" style="animation: 2s infinite shake;">
+    NHẬN BÁO GIÁ
+</button>
+
+<div class="popup-overlay" id="quoteModal">
+    <div class="popup-modal">
+
+        <button class="popup-close">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <div class="popup-header">
+            <h2>ĐĂNG KÝ TƯ VẤN BÁO GIÁ</h2>
+            <p>Vui lòng để lại thông tin, chúng tôi sẽ liên hệ lại ngay!</p>
+        </div>
+
+        <div class="popup-banner">
+            <img src="{{ asset('image/z6459770787932_32ef601e85b3ef311605fc825bcd5c15.jpg') }}" alt="">
+        </div>
+
+        <form id="consultForm" class="popup-form">
+            @csrf
+            <input
+                type="text"
+                name="customer_name"
+                placeholder="Họ tên"
+            >
+
+            <input
+                type="text"
+                name="phone"
+                placeholder="Số điện thoại"
+            >
+
+            <input
+                type="text"
+                name="product"
+                placeholder="Loại Sản Phẩm"
+            >
+
+            <button type="submit">
+                NHẬN TƯ VẤN
+            </button>
+        </form>
+
+        <div class="notify-modal" id="notifyModal">
+
+            <div class="notify-box">
+
+                <div class="notify-icon" id="notifyIcon">
+                    ✓
+                </div>
+
+                <h3 id="notifyTitle"></h3>
+
+                <p id="notifyMessage"></p>
+
+                <button id="notifyBtn">
+                    Đóng
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
