@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Banner;
 use App\Models\Category;
+use App\Models\Consultation;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
@@ -215,12 +216,49 @@ class HomeController extends Controller
             ]);
         } catch (\Throwable $e) {
             DB::rollBack();
-            dd($e->getMessage());
             return response()->json([
 
                 'success' => false
 
             ], 400);
         }
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'customer_name'=>'required|max:255',
+
+            'phone'=>[
+                'required',
+                'regex:/^0[3|5|7|8|9][0-9]{8}$/'
+            ]
+        ],[
+            'customer_name.required'=>'Vui lòng nhập họ tên.',
+            'phone.required' => 'Vui lòng nhập số điện thoại.',
+            'phone.regex' => 'Số điện thoại không hợp lệ. Vui lòng nhập số điện thoại Việt Nam gồm 10 số.'
+        ]);
+
+        try {
+            Consultation::create([
+
+                'customer_name'=>$request->customer_name,
+
+                'phone'=>$request->phone,
+                'product'=>$request->product
+
+            ]);
+
+            return response()->json([
+                'success'=>true,
+            ]);
+        } catch (\Throwable $e) {
+            dd($e);
+            return response()->json([
+                'success'=>false,
+                'message'=>'Đăng ký thất bại, có lỗi xảy ra!'
+            ], 400);
+        }
+
     }
 }

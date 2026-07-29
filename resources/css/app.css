@@ -9,6 +9,9 @@
 @import './UserPage/modal.css';
 @import './UserPage/orderModal.css';
 
+
+@import './Admin/consultation.css';
+
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';

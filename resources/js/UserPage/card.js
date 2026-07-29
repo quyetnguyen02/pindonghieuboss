@@ -231,7 +231,8 @@ function renderCart() {
 
     let html = "";
     let total = 0;
-    if (!cart.length) {
+    console.log(container, container !== null)
+    if (!cart.length && container !== null) {
 
         container.innerHTML = `
             <div class="cart-item empty">
@@ -300,13 +301,15 @@ function renderCart() {
         `;
     });
 
-    container.innerHTML = html;
+    if (!cart.length && container !== null) {
+        container.innerHTML = html;
 
-    document.getElementById("subTotal").innerText =
-        formatMoney(total) + "đ";
+        document.getElementById("subTotal").innerText =
+            formatMoney(total) + "đ";
 
-    document.getElementById("totalPrice").innerText =
-        formatMoney(total) + "đ";
+        document.getElementById("totalPrice").innerText =
+            formatMoney(total) + "đ";
+    }
 }
 
 export function formatMoney(number) {
