@@ -1,0 +1,162 @@
+.consultation-page{
+
+    background:#fff;
+
+    padding:25px;
+
+    border-radius:10px;
+
+    box-shadow:0 3px 15px rgba(0,0,0,.08);
+}
+
+.page-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:25px;
+}
+
+.page-header h2{
+
+    font-size:24px;
+
+    margin:0;
+}
+
+.filter-tabs{
+
+    display:flex;
+
+    gap:10px;
+}
+
+.filter-tabs a{
+
+    text-decoration:none;
+
+    padding:8px 18px;
+
+    border-radius:30px;
+
+    background:#f3f3f3;
+
+    color:#555;
+
+    transition:.25s;
+}
+
+.filter-tabs a:hover{
+
+    background:#e60012;
+
+    color:#fff;
+}
+
+.filter-tabs a.active{
+
+    background:#e60012;
+
+    color:#fff;
+}
+
+.consultation-table{
+
+    width:100%;
+
+    border-collapse:collapse;
+}
+
+.consultation-table th{
+
+    background:#f8f8f8;
+
+    padding:15px;
+
+    text-align:left;
+
+    border-bottom:2px solid #eee;
+}
+
+.consultation-table td{
+
+    padding:15px;
+
+    border-bottom:1px solid #eee;
+}
+
+.consultation-table tbody tr:hover{
+
+    background:#fafafa;
+}
+
+.status{
+
+    padding:6px 14px;
+
+    border-radius:20px;
+
+    color:#fff;
+
+    font-size:13px;
+
+    font-weight:600;
+
+    display:inline-block;
+}
+
+.waiting{
+
+    background:#ff9800;
+}
+
+.done{
+
+    background:#2ecc71;
+}
+
+.btn-done{
+
+    background:#2ecc71;
+
+    color:#fff;
+
+    border:none;
+
+    padding:8px 14px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+}
+
+.btn-done:hover{
+
+    background:#27ae60;
+}
+
+.btn-consulted{
+
+    background:#28a745;
+    color:#fff;
+    border:none;
+    padding:8px 14px;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:14px;
+    font-weight:600;
+    transition:.2s;
+}
+
+.btn-consulted:hover{
+
+    background:#218838;
+}
+
+.btn-consulted:active{
+
+    transform:scale(.97);
+}
