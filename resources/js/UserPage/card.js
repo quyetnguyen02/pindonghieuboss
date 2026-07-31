@@ -231,7 +231,8 @@ function renderCart() {
 
     let html = "";
     let total = 0;
-    console.log(container, container !== null)
+    console.log('1')
+    console.log(!cart.length, container !== null)
     if (!cart.length && container !== null) {
 
         container.innerHTML = `
@@ -251,6 +252,7 @@ function renderCart() {
         return;
     }
 
+    console.log(cart)
     cart.forEach(item => {
 
         const money = item.qty * item.price;
@@ -301,7 +303,8 @@ function renderCart() {
         `;
     });
 
-    if (!cart.length && container !== null) {
+    
+    if (container !== null) {
         container.innerHTML = html;
 
         document.getElementById("subTotal").innerText =
