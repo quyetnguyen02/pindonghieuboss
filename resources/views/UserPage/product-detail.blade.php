@@ -51,61 +51,73 @@
 
 {{--                    </div>--}}
 
-                    <div class="price">
+                    @if($product['original_price'] !== 0)
+                        <div class="price">
 
-                        <div class="old-price"></div>
+                            <div class="old-price"></div>
 
-                        <div class="new-price" id="unitPrice"></div>
+                            <div class="new-price" id="unitPrice"></div>
 
-                    </div>
-                    @if($product['category_id'] === 1)
-                        <div class="price-tier-box">
-                            <div class="tier-title">
-                                Giá theo số lượng
+                        </div>
+                        @if($product['category_id'] === 1)
+                            <div class="price-tier-box">
+                                <div class="tier-title">
+                                    Giá theo số lượng
+                                </div>
+
+                                <div id="priceTierList"></div>
                             </div>
+                        @endif
 
-                            <div id="priceTierList"></div>
+                        <div class="quantity-wrapper">
+                            <span class="label">Số lượng</span>
+
+                            <div class="quantity-box">
+                                <button type="button" class="qty-btn" id="minus">-</button>
+
+                                <input type="number"
+                                       id="quantity"
+                                       @if($product['category_id'] === 1) value="10" min="0"
+                                       @else value="1"
+                                       min="1" @endif readonly>
+                                <button type="button" class="qty-btn" id="plus">+</button>
+                            </div>
                         </div>
+
+                        <h3 class="totalPrice">
+                            Thành tiền:
+                            <span id="totalPrice"></span>
+                        </h3>
+
+
+                        <div style="display: flex; gap: 10px">
+                            <button class=" buy-now add-card" id="btnAddCart">
+
+                                Thêm Giỏ Hàng
+
+                            </button>
+                            <button class="buy-now checkout-detail" id="checkout">
+
+                                MUA NGAY
+
+                                <small>Miễn phí vận chuyển</small>
+
+                            </button>
+                        </div>
+                    @else
+                        <a href="tel:0379382294" class="call-now">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                                 viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24
+        1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1C10.07
+        21 3 13.93 3 5c0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1
+        0 1.24.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                            </svg>
+
+                            <span>GỌI NGAY:</span>
+                            <strong>0379 382 294</strong>
+                        </a>
                     @endif
-
-                    <div class="quantity-wrapper">
-                        <span class="label">Số lượng</span>
-
-                        <div class="quantity-box">
-                            <button type="button" class="qty-btn" id="minus">-</button>
-
-                            <input type="number"
-                                   id="quantity"
-                                   @if($product['category_id'] === 1) value="10" min="0"
-                                   @else value="1"
-                                   min="1" @endif readonly>
-                            <button type="button" class="qty-btn" id="plus">+</button>
-                        </div>
-                    </div>
-
-                    <h3 class="totalPrice">
-                        Thành tiền:
-                        <span id="totalPrice"></span>
-                    </h3>
-
-
-                    <div style="display: flex; gap: 10px">
-                        <button class=" buy-now add-card" id="btnAddCart">
-
-                            Thêm Giỏ Hàng
-
-                        </button>
-                        <button class="buy-now checkout-detail" id="checkout">
-
-                            MUA NGAY
-
-                            <small>Miễn phí vận chuyển</small>
-
-                        </button>
-                    </div>
-
-
-
 
                     <div class="policy">
 

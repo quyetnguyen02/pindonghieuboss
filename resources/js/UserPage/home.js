@@ -18,35 +18,46 @@ document.querySelectorAll(".quick-view-btn").forEach(btn => {
             this.dataset.image;
 
         document.getElementById('skuModal').value = this.dataset.sku;
-        console.log('dataset-cate' + this.dataset.cate)
         document.getElementById('categoryId').value = this.dataset.cate;
-
-        const btn = document.getElementById("btnAddCart");
-        btn.dataset.id = this.dataset.id;
-        console.log(this.dataset.id)
-        if (checkProductInCart(this.dataset.id)) {
-            btn.disabled = true;
-            btn.innerText = "Đã thêm vào giỏ";
-        } else {
-            btn.disabled = false;
-            btn.innerText = "Thêm Vào Giỏ";
-        }
-
         let oldPrice = document.getElementById("modalOldPrice");
         let newPrice = document.getElementById("modalNewPrice");
 
-        if (Number(this.dataset.sale) === 0) {
-            newPrice.innerHTML =
-                Number(this.dataset.original).toLocaleString() + "đ";
+        const btn = document.getElementById("btnAddCart");
+        console.log('soso:' )
+        console.log(parseInt(this.dataset.original) !== 0)
+        if (Number(this.dataset.original) !== 0) {
 
+            btn.dataset.id = this.dataset.id;
+            console.log(this.dataset.id)
+            if (checkProductInCart(this.dataset.id)) {
+                btn.disabled = true;
+                btn.innerText = "Đã thêm vào giỏ";
+            } else {
+                btn.disabled = false;
+                btn.innerText = "Thêm Vào Giỏ";
+            }
+
+
+
+            if (Number(this.dataset.sale) === 0) {
+                newPrice.innerHTML =
+                    Number(this.dataset.original).toLocaleString() + "đ";
+
+            } else {
+
+                oldPrice.innerHTML =
+                    Number(this.dataset.original).toLocaleString() + "đ";
+
+                newPrice.innerHTML =
+                    Number(this.dataset.sale).toLocaleString() + "đ";
+            }
+            btn.style = '';
         } else {
-
-            oldPrice.innerHTML =
-                Number(this.dataset.original).toLocaleString() + "đ";
-
-            newPrice.innerHTML =
-                Number(this.dataset.sale).toLocaleString() + "đ";
+            btn.style = 'display:none';
+            newPrice.innerHTML = '';
+            oldPrice.innerHTML = '';
         }
+
 
         modal.classList.add("show");
 

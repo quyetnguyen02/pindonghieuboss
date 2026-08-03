@@ -44,11 +44,15 @@
                                 </div>
 
                                 <div class="price">
-                                    @if($product['sale_price'])
-                                        <span class="old-price">{{number_format($product['original_price'])}}đ</span>
-                                        <span class="new-price">{{number_format($product['sale_price'])}}đ</span>
+                                    @if($product['original_price'] !== 0)
+                                        @if($product['sale_price'])
+                                            <span class="old-price">{{number_format($product['original_price'])}}đ</span>
+                                            <span class="new-price">{{number_format($product['sale_price'])}}đ</span>
+                                        @else
+                                            <span class="new-price">{{number_format($product['original_price'])}}đ</span>
+                                        @endif
                                     @else
-                                        <span class="new-price">{{number_format($product['original_price'])}}đ</span>
+                                        Liên Hệ Ngay {{$shop->zalo}}
                                     @endif
                                 </div>
                             </a>

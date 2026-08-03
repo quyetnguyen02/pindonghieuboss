@@ -102,7 +102,7 @@ class Product extends Model
             $query->where('category_id', $category_id);
         }
 
-//        dd($query->paginate(40)->withQueryString());
+//        dd($query->toSql(), $keyword, $price, $cell, $cell_type, $category_id);
         return $query->paginate(40)->withQueryString();
     }
 

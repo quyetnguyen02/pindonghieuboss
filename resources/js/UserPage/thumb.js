@@ -118,12 +118,15 @@ function renderProduct(type){
     }
 
     if (product.newPrice > 0) {
-        oldPrice.innerHTML = product.oldPrice.toLocaleString('vi-VN') + 'đ';
+        if (oldPrice && newPrice) {
+            oldPrice.innerHTML = product.oldPrice.toLocaleString('vi-VN') + 'đ';
 
-        newPrice.innerHTML = product.newPrice.toLocaleString('vi-VN') + 'đ';
+            newPrice.innerHTML = product.newPrice.toLocaleString('vi-VN') + 'đ';
+        }
     } else {
-        newPrice.innerHTML = product.oldPrice.toLocaleString('vi-VN') + 'đ';
-
+        if (newPrice) {
+            newPrice.innerHTML = product.oldPrice.toLocaleString('vi-VN') + 'đ';
+        }
     }
 
     mainImage.src = '/image/' + product.images[0];
