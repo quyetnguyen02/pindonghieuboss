@@ -46,6 +46,7 @@
         <tr>
 
             <th>#</th>
+            <th>Web</th>
             <th>Khách hàng</th>
             <th>SĐT</th>
             <th>Sản phẩm</th>
@@ -64,6 +65,7 @@
             <tr>
 
                 <td>{{ $item->id }}</td>
+                <td>@if($item->web === 1) Pin Đóng Hiếu Boss @else Hukan VN @endif</td>
 
                 <td>{{ $item->customer_name }}</td>
 

@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
 
   php:
@@ -7,24 +5,23 @@ services:
       context: .
       dockerfile: dockerfiles/dockerfile
 
-    container_name: php
+    container_name: php_pin
 
     working_dir: /var/www/html
 
     volumes:
       - ./:/var/www/html
 
-    depends_on:
-      - mysql
+
 
   nginx:
 
     image: nginx:latest
 
-    container_name: laravel_nginx
+    container_name: laravel_nginx_pin
 
     ports:
-      - "8000:80"
+      - "8080:80"
 
     volumes:
       - ./:/var/www/html
@@ -32,31 +29,3 @@ services:
 
     depends_on:
       - php
-
-  mysql:
-
-    image: mysql:8.0
-
-    container_name: laravel_mysql
-
-    restart: unless-stopped
-
-    environment:
-
-      MYSQL_DATABASE: hieuboss
-
-      MYSQL_ROOT_PASSWORD: root
-
-      MYSQL_USER: hieu
-
-      MYSQL_PASSWORD: hieu
-
-    ports:
-      - "3306:3306"
-
-    volumes:
-      - mysql_data:/var/lib/mysql
-
-volumes:
-
-  mysql_data:

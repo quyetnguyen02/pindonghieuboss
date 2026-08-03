@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Thumb extends Model
 {
-    protected $table = 'thumbs';
+    protected $table = 'thumbs_p';
 
     public function getThumbByIds($ids)
     {

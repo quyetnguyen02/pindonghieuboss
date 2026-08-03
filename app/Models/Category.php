@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    protected $table = 'categories';
+    protected $table = 'categories_p';
 
     public function getCategoryLists(): \Illuminate\Database\Eloquent\Collection
     {

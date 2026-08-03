@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
-    protected $table = 'products';
+    protected $table = 'products_p';
 
     protected $appends = [
         'discount_percent',
@@ -17,6 +17,7 @@ class Product extends Model
     {
         return $this->belongsTo(Thumb::class, 'image_id');
     }
+
 
     public function getProductsByCategory($categoryIds): array
     {
@@ -49,8 +50,9 @@ class Product extends Model
         );
     }
 
-    public function searchProducts(?string $keyword, $price, $gen, $type, $category_id): \Illuminate\Pagination\AbstractPaginator|\Illuminate\Pagination\LengthAwarePaginator
+    public function searchProducts(?string $keyword, $price, $cell, $cell_type, $category_id): \Illuminate\Pagination\AbstractPaginator|\Illuminate\Pagination\LengthAwarePaginator
     {
+//        dd($keyword, $price, $cell, $cell_type, $category_id);
         $query = Product::with('image');
         // Search keyword
 
@@ -63,7 +65,6 @@ class Product extends Model
                     ->orWhere('original_price', 'like', "%{$keyword}%")
                     ->orWhere('sale_price', 'like', "%{$keyword}%")
                     ->orWhere('id', $keyword);
-
             });
         });
 
@@ -87,14 +88,14 @@ class Product extends Model
 
         }
 
-        // gen
-        if (!empty($gen)) {
-            $query->whereIn('gen', $gen);
+        // cell number
+        if (!empty($cell)) {
+            $query->whereIn('cell_number', $cell);
         }
 
         // type
-        if (!empty($type)) {
-            $query->whereIn('type', $type);
+        if (!empty($cell_type)) {
+            $query->whereIn('cell_type', $cell_type);
         }
 
         if (!empty($category_id)) {

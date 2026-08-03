@@ -9,6 +9,7 @@ class Consultation extends Model
     protected $fillable = [
         'customer_name',
         'phone',
-        'product'
+        'product',
+        'web'
     ];
 }

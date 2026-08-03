@@ -29,7 +29,8 @@
                             data-original="{{ $product['original_price'] }}"
                             data-sale="{{ $product['sale_price'] }}"
                             data-id = "{{$product['id']}}"
-                            data-sku = {{$product['sku']}}>
+                            data-sku = "{{$product['sku']}}"
+                            data-cate = "{{$product['category_id']}}">
                         XEM NHANH
                     </button>
 
@@ -69,6 +70,8 @@
         <div class="modal-content">
             <span class="close-modal">&times;</span>
             <input type="hidden" id="skuModal" value="">
+            <input type="hidden" id="categoryId" value="">
+
 
 
             <div class="modal-left">
@@ -78,10 +81,10 @@
             <div class="modal-right">
                 <h1 id="modalTitle"></h1>
 
-                <div class="product-option">
-                    <button class="option-btn active">Thân máy</button>
-                    {{--                            <button class="option-btn">Bộ 1 Pin</button>--}}
-                </div>
+{{--                <div class="product-option">--}}
+{{--                    <button class="option-btn active">Thân máy</button>--}}
+{{--                    --}}{{--                            <button class="option-btn">Bộ 1 Pin</button>--}}
+{{--                </div>--}}
                 <div class="product-price">
                     <span class="old-price" id="modalOldPrice"></span>
                     <span class="new-price" id="modalNewPrice"></span>

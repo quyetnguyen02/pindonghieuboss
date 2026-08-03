@@ -1,6 +1,21 @@
 import {countCart} from "./card.js";
 
-console.log(window.product)
+const mainImage = document.getElementById('mainImage');
+
+const thumbs = document.querySelectorAll('.thumb');
+
+const thumbList = document.querySelector(".thumb-list");
+
+const oldPrice = document.querySelector(".old-price");
+
+const newPrice = document.querySelector(".new-price");
+
+const quantityInput=document.getElementById("quantity");
+const unitPrice = Number(window.product.sale_price === 0 ? window.product.original_price : window.product.sale_price );
+const totalPrice=document.getElementById("totalPrice");
+
+// quantityInput.value=10;
+
 const products = {
 
     body: {
@@ -29,24 +44,70 @@ const products = {
     }
 
 };
-const mainImage = document.getElementById('mainImage');
+console.log(window.tiers)
+const tiers = window.tiers.map(item => ({
+    from: Number(item.from_quantity),
+    price: Number(item.price)
+}));
+function getCurrentTier(quantity){
 
-const thumbs = document.querySelectorAll('.thumb');
-console.log(thumbs)
+    let current=tiers[0];
 
-const thumbList = document.querySelector(".thumb-list");
+    tiers.forEach(t=>{
 
-const oldPrice = document.querySelector(".old-price");
+        if(quantity>=t.from){
+            current=t;
+        }
 
-const newPrice = document.querySelector(".new-price");
+    });
 
-document.addEventListener('DOMContentLoaded', () => {
+    return current;
+}
 
-    console.log('product detail loaded');
+function renderTier() {
 
-    // Toàn bộ code của bạn ở đây
+    const qty = parseInt(quantityInput.value);
 
-});
+    const current = getCurrentTier(qty);
+
+    let html = '';
+
+    tiers.forEach((tier, index) => {
+
+        let label = '';
+
+        if (index == tiers.length - 1) {
+
+            label = `≥ ${tier.from} viên`;
+
+        } else {
+
+            label = `${tier.from} - ${tiers[index + 1].from - 1} viên`;
+
+        }
+
+        html += `
+        <div class="price-tier-item ${current.from === tier.from ? 'active' : ''}">
+            <div class="left">
+                <span class="icon">👉</span>
+                <span>${label}</span>
+            </div>
+
+            <div class="price">
+                ${formatMoney(tier.price)}/cell
+            </div>
+        </div>
+        `;
+
+    });
+
+    document.getElementById("priceTierList").innerHTML = html;
+
+    // unitPrice.innerHTML = formatMoney(current.price);
+
+    totalPrice.innerHTML = formatMoney(current.price * qty);
+
+}
 
 renderProduct("body");
 function renderProduct(type){
@@ -120,23 +181,16 @@ variantBtns.forEach(btn=>{
 });
 
 // Khởi tạo
-
-const quantityInput = document.getElementById("quantity");
 const plusBtn = document.getElementById("plus");
 const minusBtn = document.getElementById("minus");
-
-const unitPrice = Number(window.product.sale_price === 0 ? window.product.original_price : window.product.sale_price );
-
-const totalPrice = document.getElementById("totalPrice");
+const category_id = document.getElementById("category_id").value;
 
 function formatMoney(number) {
-    console.log(number)
     return new Intl.NumberFormat("vi-VN").format(number) + "đ";
 }
-
 updateTotal();
-
 function updateTotal() {
+    console.log(quantityInput.value)
     let qty = parseInt(quantityInput.value);
 
     if (isNaN(qty) || qty < 1) {
@@ -144,28 +198,57 @@ function updateTotal() {
         quantityInput.value = 1;
     }
 
+    console.log(formatMoney(unitPrice * qty))
     totalPrice.innerText = formatMoney(unitPrice * qty);
 }
 
 // Tăng
 plusBtn.addEventListener("click", () => {
-    quantityInput.value++;
+    if (category_id === '1') {
+        quantityInput.value = parseInt(quantityInput.value) + 10;
+        updateTotal();
+        renderTier();
+    } else {
+        quantityInput.value++;
+    }
+
+    console.log(quantityInput.value)
+
     updateTotal();
+    renderTier();
 });
 
 // Giảm
 minusBtn.addEventListener("click", () => {
-    if (quantityInput.value > 1) {
-        quantityInput.value--;
+    console.log('cate:' + quantityInput.value)
+
+    if (category_id === '1') {
+        if (quantityInput.value > 10) {
+            quantityInput.value = parseInt(quantityInput.value) - 10;
+
+        }
         updateTotal();
+        renderTier();
+    } else {
+        if (quantityInput.value > 1) {
+            quantityInput.value--;
+            updateTotal();
+            renderTier();
+        }
     }
 });
 
-// Người dùng nhập trực tiếp
-quantityInput.addEventListener("input", updateTotal);
+// // Người dùng nhập trực tiếp
+// quantityInput.addEventListener("change", () => {
+//     quantityInput.value = document.getElementById('quantity').value;
+//     updateTotal()
+//
+//     renderTier();
+// });
 
 document.addEventListener('DOMContentLoaded', function () {
     countCart();
+    renderTier();
 })
 
 

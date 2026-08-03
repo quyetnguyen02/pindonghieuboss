@@ -10,8 +10,6 @@ document.addEventListener('DOMContentLoaded', function () {
 document.querySelectorAll(".quick-view-btn").forEach(btn => {
 
     btn.addEventListener("click", function () {
-        console.log(1)
-        console.log(this.dataset)
 
         document.getElementById("modalTitle").textContent =
             this.dataset.name;
@@ -20,6 +18,8 @@ document.querySelectorAll(".quick-view-btn").forEach(btn => {
             this.dataset.image;
 
         document.getElementById('skuModal').value = this.dataset.sku;
+        console.log('dataset-cate' + this.dataset.cate)
+        document.getElementById('categoryId').value = this.dataset.cate;
 
         const btn = document.getElementById("btnAddCart");
         btn.dataset.id = this.dataset.id;
@@ -74,12 +74,14 @@ document.querySelectorAll(".quick-view-btn").forEach(btn => {
 var btnAddCart = document.getElementById("btnAddCart");
 if (btnAddCart) {
     document.getElementById("btnAddCart").onclick = function () {
+        var cateId = parseInt(document.getElementById("categoryId").value);
+        console.log('cate:' + cateId)
         var product= {
             'id':document.getElementById('btnAddCart').dataset.id,
             'sku':document.getElementById('skuModal').value,
             'name':document.getElementById('modalTitle').innerHTML,
             'image':document.getElementById('modalImage').src,
-            'qty': 1,
+            'qty': cateId === 1 ? 10 : 1,
             'price':Number(document.getElementById('modalNewPrice').innerHTML.replace(/[^\d]/g, "")),
         }
 
