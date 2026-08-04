@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id()->autoIncrement();
 
             $table->string('customer_name');
-            $table->string('phone',20);
+            $table->string('phone', 20);
             $table->string('product')->nullable();
 
             // 0 = Chờ tư vấn

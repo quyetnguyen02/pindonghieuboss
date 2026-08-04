@@ -30,9 +30,9 @@ class ConsultationController extends Controller
 
         Consultation::where('id', $id)->update([
             'status' => 1,
-            'updated_at' => now()
+            'updated_at' => now(),
         ]);
 
-        return back()->with('success','Đã cập nhật.');
+        return back()->with('success', 'Đã cập nhật.');
     }
 }

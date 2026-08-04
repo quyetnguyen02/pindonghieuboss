@@ -1,10 +1,5 @@
 <?php
+
 namespace App\Http\Service;
-class CookieService
-{
 
-}
-
-
-
-?>
+class CookieService {}

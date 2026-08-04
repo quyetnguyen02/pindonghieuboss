@@ -25,9 +25,9 @@ return new class extends Migration
             // Giá khuyến mãi
             $table->unsignedBigInteger('sale_price');
 
-            //0: phụ kiện
-            //1: pin
-            //2: điện
+            // 0: phụ kiện
+            // 1: pin
+            // 2: điện
             $table->enum('type', ['0', '1', '2'])
                 ->default('0')
                 ->comment('kiểu sản phầm: phụ kiện or pin or điện');

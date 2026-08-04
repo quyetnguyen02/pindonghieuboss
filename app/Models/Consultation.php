@@ -10,6 +10,6 @@ class Consultation extends Model
         'customer_name',
         'phone',
         'product',
-        'web'
+        'web',
     ];
 }

@@ -16,19 +16,19 @@ return new class extends Migration
 
             $table->string('customer_name');
 
-            $table->string('phone',20);
+            $table->string('phone', 20);
 
             $table->string('address');
 
-            $table->decimal('total_price',15,0);
+            $table->decimal('total_price', 15, 0);
 
             $table->tinyInteger('status')->default(0);
-            //0: chờ xác nhận
-            //1: đã tạo đơn
-            //2: đang giao
-            //3: đang hoàn
-            //4: đã hoàn
-            //5: đã giao
+            // 0: chờ xác nhận
+            // 1: đã tạo đơn
+            // 2: đang giao
+            // 3: đang hoàn
+            // 4: đã hoàn
+            // 5: đã giao
 
             $table->timestamps();
         });

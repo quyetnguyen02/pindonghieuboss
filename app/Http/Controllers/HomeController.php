@@ -15,40 +15,40 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-
 class HomeController extends Controller
 {
     public $shop;
+
     public $cell = [5, 10, 15, 20, 30];
+
     public $cell_type = [
         '0' => 'SunPower',
         '1' => 'Eve',
         '2' => 'SamSung',
     ];
 
-    public function __construct() {
-        //get shop info
-        $shopModel = new Shop();
+    public function __construct()
+    {
+        // get shop info
+        $shopModel = new Shop;
         $this->shop = $shopModel->getShopInfo();
     }
 
     public function home()
     {
-        //get categories
-        $categoryModel = new Category();
+        // get categories
+        $categoryModel = new Category;
         $categories = $categoryModel->getCategoryLists()->keyBy('id');
 
-        //get banner list
-        $bannerModel = new Banner();
+        // get banner list
+        $bannerModel = new Banner;
         $banners = $bannerModel->getBannersDisplay();
 
-        //get Product
-        $productModel = new Product();
-        $products = $productModel->getProductsByCategory([1,2,3,4, 5]);
-
+        // get Product
+        $productModel = new Product;
+        $products = $productModel->getProductsByCategory([1, 2, 3, 4, 5]);
 
         $categoryListProducts = collect($products)->keys()->all();
-
 
         return view('UserPage.home',
             [
@@ -57,7 +57,7 @@ class HomeController extends Controller
                 'banners' => $banners,
                 'categoryListProducts' => $categoryListProducts,
                 'products' => $products,
-                'keyword' => ''
+                'keyword' => '',
             ]
         );
 
@@ -74,17 +74,16 @@ class HomeController extends Controller
         $keyword = trim($keyword);
         $keywordAscii = strtolower(Str::ascii($keyword));
 
-        //get categories
-        $categoryModel = new Category();
+        // get categories
+        $categoryModel = new Category;
         $categories = $categoryModel->getCategoryLists()->keyBy('id');
 
-        $productModel = new Product();
+        $productModel = new Product;
 
         $products = $productModel->searchProducts($keywordAscii, $price, $cell, $type, $category_id);
         $categoryListProducts = $products->getCollection()
             ->groupBy('category_id')
             ->toArray();
-
 
         return view('UserPage.search', [
             'keyword' => $keyword,
@@ -100,22 +99,23 @@ class HomeController extends Controller
 
     public function productDetail(Request $request, $id, $slug)
     {
-        //get categories
-        $categoryModel = new Category();
+        // get categories
+        $categoryModel = new Category;
         $categories = $categoryModel->getCategoryLists()->keyBy('id');
 
-        //get product by id
-        $productModel = new Product();
+        // get product by id
+        $productModel = new Product;
         $product = $productModel->getProductById($id);
-        $productPriceTierModel = new ProductPriceTier();
+        $productPriceTierModel = new ProductPriceTier;
         $productPriceTier = $productPriceTierModel->getByProductId($product['id']);
 
-        //get thumbs
-        $thumbModel = new Thumb();
-        $thumb_ids = json_decode($product['thumb_id'], true);;
+        // get thumbs
+        $thumbModel = new Thumb;
+        $thumb_ids = json_decode($product['thumb_id'], true);
         $thumbs = $thumbModel->getThumbByIds($thumb_ids)->pluck('src')->toArray();
         $product['thumbs'] = $thumbs;
         $product['specifications'] = json_decode($product['specifications'], true);
+
         return view('UserPage.product-detail', [
             'product' => $product,
             'shop' => $this->shop,
@@ -127,8 +127,8 @@ class HomeController extends Controller
 
     public function card()
     {
-        //get categories
-        $categoryModel = new Category();
+        // get categories
+        $categoryModel = new Category;
         $categories = $categoryModel->getCategoryLists()->keyBy('id');
 
         return view('UserPage.card', [
@@ -146,66 +146,65 @@ class HomeController extends Controller
 
             'phone' => [
                 'required',
-                'regex:/^0[3|5|7|8|9][0-9]{8}$/'
+                'regex:/^0[3|5|7|8|9][0-9]{8}$/',
             ],
 
             'address' => 'required',
 
-            'cart' => 'required'
+            'cart' => 'required',
         ], [
             'phone.required' => 'Vui lòng nhập số điện thoại.',
-            'phone.regex' => 'Số điện thoại không hợp lệ. Vui lòng nhập số điện thoại Việt Nam gồm 10 số.'
+            'phone.regex' => 'Số điện thoại không hợp lệ. Vui lòng nhập số điện thoại Việt Nam gồm 10 số.',
         ]);
 
         try {
             DB::beginTransaction();
-            $total =0 ;
+            $total = 0;
 
-            foreach($request->cart as $item) {
+            foreach ($request->cart as $item) {
 
                 $total += $item['qty'] * $item['price'];
             }
 
             $order = [
-                'customer_name'=>$request->customer_name,
+                'customer_name' => $request->customer_name,
 
-                'phone'=>$request->phone,
+                'phone' => $request->phone,
 
-                'address'=>$request->address,
+                'address' => $request->address,
 
-                'total_price'=>$total,
-                'web' => 1
+                'total_price' => $total,
+                'web' => 1,
             ];
-            $orderModel = new Order();
+            $orderModel = new Order;
             $order = $orderModel->add($order);
 
-            if (!$order) {
+            if (! $order) {
                 return response()->json([
 
-                    'success' => false
+                    'success' => false,
 
                 ], 400);
             }
 
-
-            foreach($request->cart as $item){
+            foreach ($request->cart as $item) {
                 $orderItem = [
-                    'order_id'=>$order->id,
+                    'order_id' => $order->id,
 
-                    'product_id'=>$item['id'],
+                    'product_id' => $item['id'],
 
-                    'qty'=>$item['qty'],
+                    'qty' => $item['qty'],
 
-                    'price'=>$item['price'],
+                    'price' => $item['price'],
                 ];
 
-                $orderItemModel = new OrderItem();
+                $orderItemModel = new OrderItem;
                 $orderItem = $orderItemModel->add($orderItem);
 
-                if (!$orderItem) {
+                if (! $orderItem) {
                     return response()->json([
 
-                        'success' => false
+                        'success' => false,
 
                     ], 400);
                 }
@@ -215,14 +214,15 @@ class HomeController extends Controller
 
             return response()->json([
 
-                'success'=>true
+                'success' => true,
 
             ]);
         } catch (\Throwable $e) {
             DB::rollBack();
+
             return response()->json([
 
-                'success' => false
+                'success' => false,
 
             ], 400);
         }
@@ -231,36 +231,36 @@ class HomeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'customer_name'=>'required|max:255',
+            'customer_name' => 'required|max:255',
 
-            'phone'=>[
+            'phone' => [
                 'required',
-                'regex:/^0[3|5|7|8|9][0-9]{8}$/'
-            ]
-        ],[
-            'customer_name.required'=>'Vui lòng nhập họ tên.',
+                'regex:/^0[3|5|7|8|9][0-9]{8}$/',
+            ],
+        ], [
+            'customer_name.required' => 'Vui lòng nhập họ tên.',
             'phone.required' => 'Vui lòng nhập số điện thoại.',
-            'phone.regex' => 'Số điện thoại không hợp lệ. Vui lòng nhập số điện thoại Việt Nam gồm 10 số.'
+            'phone.regex' => 'Số điện thoại không hợp lệ. Vui lòng nhập số điện thoại Việt Nam gồm 10 số.',
         ]);
 
         try {
             Consultation::create([
 
-                'customer_name'=>$request->customer_name,
+                'customer_name' => $request->customer_name,
 
-                'phone'=>$request->phone,
-                'product'=>$request->product,
-                'web' => 1
+                'phone' => $request->phone,
+                'product' => $request->product,
+                'web' => 1,
 
             ]);
 
             return response()->json([
-                'success'=>true,
+                'success' => true,
             ]);
         } catch (\Throwable $e) {
             return response()->json([
-                'success'=>false,
-                'message'=>'Đăng ký thất bại, có lỗi xảy ra!'
+                'success' => false,
+                'message' => 'Đăng ký thất bại, có lỗi xảy ra!',
             ], 400);
         }
 
