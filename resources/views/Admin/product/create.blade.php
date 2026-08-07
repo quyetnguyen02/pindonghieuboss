@@ -32,6 +32,16 @@
                     @enderror
                 </div>
 
+                <div class="mb-3">
+                    <label for="sku" class="form-label">Mã Sản Phẩm</label>
+                    <input type="text" class="form-control @error('sku') is-invalid @enderror"
+                           id="sku" name="sku" value="{{ old('sku') }}"
+                           placeholder="Nhập mã sản phẩm">
+                    @error('sku')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
+                </div>
+
                 <div class="row">
                     <div class="col-12 col-md-6 mb-3">
                         <label for="category_id" class="form-label">Danh Mục <span class="text-danger">*</span></label>

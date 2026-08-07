@@ -59,6 +59,7 @@ class ProductController extends Controller
             DB::beginTransaction();
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
+                'sku' => 'nullable|string|max:255',
                 'category_id' => 'required|exists:categories_p,id',
                 'product_image_main' => 'required|image|mimes:jpeg,png,gif,webp,jpg|max:5120',
                 'product_images' => 'nullable|array',
@@ -124,6 +125,7 @@ class ProductController extends Controller
 
         $data = [
             'name' => $validated['name'],
+            'sku' => $validated['sku'] ?? null,
             'category_id' => $validated['category_id'],
             'image_id' => $imageId,
             'thumb_id' => ! empty($thumbIds) ? json_encode($thumbIds) : null,
