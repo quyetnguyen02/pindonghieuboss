@@ -100,7 +100,7 @@
                             </td>
                             <td class="d-none d-lg-table-cell">
                                 @php
-                                    $types = ['0' => 'Cell Pin', '1' => 'Pin Đóng', '2' => 'Điện'];
+                                    $types = ['0' => 'Cell Pin', '1' => 'Pin Đóng'];
                                 @endphp
                                 <small>{{ $types[$product->type] ?? '-' }}</small>
                             </td>

@@ -10,6 +10,7 @@ use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\ProductPriceTier;
 use App\Models\Shop;
+use App\Models\CellType;
 use App\Models\Thumb;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -20,12 +21,6 @@ class HomeController extends Controller
     public $shop;
 
     public $cell = [5, 10, 15, 20, 30];
-
-    public $cell_type = [
-        '0' => 'SunPower',
-        '1' => 'Eve',
-        '2' => 'SamSung',
-    ];
 
     public function __construct()
     {
@@ -93,6 +88,8 @@ class HomeController extends Controller
             ->groupBy('category_id')
             ->toArray();
 
+        $cell_type = CellType::all()->pluck('name')->toArray();
+
         return view('UserPage.search', [
             'keyword' => $keyword,
             'products' => $products,
@@ -100,7 +97,7 @@ class HomeController extends Controller
             'shop' => $this->shop,
             'categories' => $categories,
             'cells' => $this->cell,
-            'cell_type' => $this->cell_type,
+            'cell_type' => $cell_type,
         ]);
 
     }

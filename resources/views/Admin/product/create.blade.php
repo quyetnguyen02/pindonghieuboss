@@ -56,11 +56,45 @@
                             <option value="">-- Chọn Loại --</option>
                             <option value="0" {{ old('type') == '0' ? 'selected' : '' }}>Cell Pin</option>
                             <option value="1" {{ old('type') == '1' ? 'selected' : '' }}>Pin Đóng</option>
-                            <option value="2" {{ old('type') == '2' ? 'selected' : '' }}>Điện</option>
+                        
                         </select>
                         @error('type')
                             <span class="invalid-feedback">{{ $message }}</span>
                         @enderror
+                    </div>
+                </div>
+
+                <div id="pin-details-section" class="card border-0 bg-light mb-3 d-none">
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-12 col-md-6">
+                                <label for="cell_type" class="form-label">Thương hiệu Cell</label>
+                                <select id="cell_type" name="cell_type" class="form-select @error('cell_type') is-invalid @enderror">
+                                    <option value="">-- Chọn Thương hiệu Cell --</option>
+                                    @foreach($cellTypes as $cellType)
+                                        <option value="{{ $cellType->id }}"
+                                                {{ old('cell_type') == $cellType->id ? 'selected' : '' }}>
+                                            {{ $cellType->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('cell_type')
+                                    <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <label for="cell_number" class="form-label">Số lượng Cell</label>
+                                <select id="cell_number" name="cell_number" class="form-select @error('cell_number') is-invalid @enderror">
+                                    <option value="">-- Chọn Số Cell --</option>
+                                    @foreach([5, 10, 15, 20, 30] as $count)
+                                        <option value="{{ $count }}" {{ old('cell_number') == $count ? 'selected' : '' }}>{{ $count }} Cell</option>
+                                    @endforeach
+                                </select>
+                                @error('cell_number')
+                                    <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -317,10 +351,24 @@ function togglePriceTierSection() {
     }
 }
 
+function togglePinDetailsSection() {
+    const typeValue = document.getElementById('type').value;
+    const section = document.getElementById('pin-details-section');
+
+    if (typeValue === '1') {
+        section.classList.remove('d-none');
+    } else {
+        section.classList.add('d-none');
+    }
+}
+
 const typeSelect = document.getElementById('type');
 const categorySelect = document.getElementById('category_id');
 if (typeSelect) {
-    typeSelect.addEventListener('change', togglePriceTierSection);
+    typeSelect.addEventListener('change', () => {
+        togglePriceTierSection();
+        togglePinDetailsSection();
+    });
 }
 if (categorySelect) {
     categorySelect.addEventListener('change', togglePriceTierSection);
@@ -328,6 +376,7 @@ if (categorySelect) {
 
 window.addEventListener('DOMContentLoaded', () => {
     togglePriceTierSection();
+    togglePinDetailsSection();
 });
 
 function removeSpecificationRow(button) {

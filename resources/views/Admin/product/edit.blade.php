@@ -59,11 +59,45 @@
                             <option value="">-- Chọn Loại --</option>
                             <option value="0" {{ old('type', $product->type) == '0' ? 'selected' : '' }}>Cell Pin</option>
                             <option value="1" {{ old('type', $product->type) == '1' ? 'selected' : '' }}>Pin Đóng</option>
-                            <option value="2" {{ old('type', $product->type) == '2' ? 'selected' : '' }}>Điện</option>
+    
                         </select>
                         @error('type')
                             <span class="invalid-feedback">{{ $message }}</span>
                         @enderror
+                    </div>
+                </div>
+
+                <div id="pin-details-section" class="card border-0 bg-light mb-3 d-none">
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-12 col-md-6">
+                                <label for="cell_type" class="form-label">Thương hiệu Cell</label>
+                                <select id="cell_type" name="cell_type" class="form-select @error('cell_type') is-invalid @enderror">
+                                    <option value="">-- Chọn Thương hiệu Cell --</option>
+                                    @foreach($cellTypes as $cellType)
+                                        <option value="{{ $cellType->id }}"
+                                                {{ old('cell_type', $product->cell_type) == $cellType->id ? 'selected' : '' }}>
+                                            {{ $cellType->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('cell_type')
+                                    <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <label for="cell_number" class="form-label">Số lượng Cell</label>
+                                <select id="cell_number" name="cell_number" class="form-select @error('cell_number') is-invalid @enderror">
+                                    <option value="">-- Chọn Số Cell --</option>
+                                    @foreach([5, 10, 15, 20, 30] as $count)
+                                        <option value="{{ $count }}" {{ old('cell_number', $product->cell_number) == $count ? 'selected' : '' }}>{{ $count }} Cell</option>
+                                    @endforeach
+                                </select>
+                                @error('cell_number')
+                                    <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
                     </div>
                 </div>
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\CellType;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductPriceTier;
@@ -47,8 +48,9 @@ class ProductController extends Controller
     {
         $categories = Category::all();
         $thumbs = Thumb::all();
+        $cellTypes = CellType::orderBy('name')->get();
 
-        return view('Admin.product.create', compact('categories', 'thumbs'));
+        return view('Admin.product.create', compact('categories', 'thumbs', 'cellTypes'));
     }
 
     public function store(Request $request)
@@ -72,6 +74,8 @@ class ProductController extends Controller
                 'price_tiers_qty.*' => 'nullable|integer|min:1',
                 'price_tiers_price' => 'nullable|array',
                 'price_tiers_price.*' => 'nullable|numeric|min:0',
+                'cell_type' => 'required_if:type,1|nullable|exists:cell_types,id',
+                'cell_number' => 'required_if:type,1|nullable|integer|in:5,10,15,20,30',
             ]);
 
 
@@ -126,6 +130,8 @@ class ProductController extends Controller
             'original_price' => $validated['original_price'] ?? '0',
             'sale_price' => $validated['sale_price'] ?? '0',
             'type' => $validated['type'],
+            'cell_type' => $validated['type'] === '1' ? $validated['cell_type'] : null,
+            'cell_number' => $validated['type'] === '1' ? $validated['cell_number'] : null,
             'specifications' => ! empty($specifications) ? $specifications : null,
             'visible' => 1,
         ];
@@ -162,6 +168,7 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $categories = Category::all();
+        $cellTypes = CellType::orderBy('name')->get();
         $product->load('image');
         $priceTiers = ProductPriceTier::where('product_id', $product->id)
             ->orderBy('from_quantity')
@@ -180,7 +187,7 @@ class ProductController extends Controller
         $subThumbs = ! empty($subThumbIds) ? Thumb::whereIn('id', $subThumbIds)->get() : collect();
 
 
-        return view('Admin.product.edit', compact('product', 'categories', 'subThumbs', 'priceTiers'));
+        return view('Admin.product.edit', compact('product', 'categories', 'cellTypes', 'subThumbs', 'priceTiers'));
     }
 
     public function update(Request $request, Product $product)
@@ -199,6 +206,8 @@ class ProductController extends Controller
                 'original_price' => 'required|numeric|min:0',
                 'sale_price' => 'nullable|numeric|min:0',
                 'type' => 'required|in:0,1,2',
+                'cell_type' => 'required_if:type,1|nullable|exists:cell_types,id',
+                'cell_number' => 'required_if:type,1|nullable|integer|in:5,10,15,20,30',
                 'spec_keys' => 'nullable|array',
                 'spec_keys.*' => 'nullable|string',
                 'spec_values' => 'nullable|array',
@@ -268,6 +277,8 @@ class ProductController extends Controller
                 'original_price' => $validated['original_price'],
                 'sale_price' => $validated['sale_price'],
                 'type' => $validated['type'],
+                'cell_type' => $validated['type'] === '1' ? $validated['cell_type'] : null,
+                'cell_number' => $validated['type'] === '1' ? $validated['cell_number'] : null,
                 'specifications' => ! empty($specifications) ? $specifications : null,
                 'visible' => $request->has('visible') ? 1 : 0,
             ]);

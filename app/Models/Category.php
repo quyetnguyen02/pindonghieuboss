@@ -9,6 +9,11 @@ class Category extends Model
 {
     protected $table = 'categories_p';
 
+    protected $fillable = [
+        'name',
+        'show_on_homepage',
+    ];
+
     protected $casts = [
         'show_on_homepage' => 'boolean',
     ];

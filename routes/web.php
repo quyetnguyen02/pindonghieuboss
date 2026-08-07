@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoryDisplayController;
+use App\Http\Controllers\Admin\CellTypeController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
@@ -63,8 +64,17 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::post('/products', [ProductController::class, 'store'])
         ->name('admin.products.store');
 
+    Route::get('/cell-types', [CellTypeController::class, 'index'])
+        ->name('admin.cell-types.index');
+    Route::post('/cell-types', [CellTypeController::class, 'store'])
+        ->name('admin.cell-types.store');
+    Route::delete('/cell-types/{cellType}', [CellTypeController::class, 'destroy'])
+        ->name('admin.cell-types.destroy');
+
     Route::get('/category-display', [CategoryDisplayController::class, 'edit'])
         ->name('admin.category-display.edit');
+    Route::post('/category-display/categories', [CategoryDisplayController::class, 'store'])
+        ->name('admin.category-display.store');
     Route::put('/category-display', [CategoryDisplayController::class, 'update'])
         ->name('admin.category-display.update');
     Route::get('/products/{product}/edit', [ProductController::class, 'edit'])

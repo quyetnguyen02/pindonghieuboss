@@ -81,6 +81,37 @@
             border-left-color: #28a745;
         }
 
+        .sidebar-parent {
+            position: relative;
+        }
+
+        .sidebar-parent > a {
+            cursor: pointer;
+        }
+
+        .sidebar-submenu {
+            display: none;
+            margin-left: 1rem;
+            border-left: 1px solid rgba(255,255,255,0.12);
+            padding-left: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .sidebar-submenu.show {
+            display: block;
+        }
+
+        .sidebar-submenu a {
+            padding: 8px 20px;
+            font-size: 0.9rem;
+        }
+
+        .sidebar-submenu a:hover {
+            background-color: rgba(255,255,255,0.08);
+            border-left-color: transparent;
+            padding-left: 20px;
+        }
+
         .admin-sidebar h6 {
             padding-left: 20px;
             padding-right: 20px;
@@ -264,12 +295,16 @@
                 <a href="{{ route('admin.banners') }}" class="@if(request()->routeIs('admin.banners*')) active @endif">
                     🖼️ Banner
                 </a>
-                <a href="{{ route('admin.category-display.edit') }}" class="@if(request()->routeIs('admin.category-display*')) active @endif">
-                    🧩 Hiển Thị Danh Mục
-                </a>
-                <a href="{{ route('admin.products.index') }}" class="@if(request()->routeIs('admin.products*')) active @endif">
-                    📦 Sản Phẩm
-                </a>
+                <div class="sidebar-parent">
+                    <a href="#" id="productMenuToggle" class="@if(request()->routeIs('admin.products*') || request()->routeIs('admin.category-display*') || request()->routeIs('admin.cell-types*')) active @endif">
+                        📦 Sản Phẩm
+                    </a>
+                    <div class="sidebar-submenu @if(request()->routeIs('admin.products*') || request()->routeIs('admin.category-display*') || request()->routeIs('admin.cell-types*')) show @endif">
+                        <a href="{{ route('admin.products.index') }}" class="@if(request()->routeIs('admin.products*')) active @endif">Danh sách</a>
+                        <a href="{{ route('admin.category-display.edit') }}" class="@if(request()->routeIs('admin.category-display*')) active @endif">Danh mục</a>
+                        <a href="{{ route('admin.cell-types.index') }}" class="@if(request()->routeIs('admin.cell-types*')) active @endif">Thương hiệu Cell</a>
+                    </div>
+                </div>
                 <a href="{{ route('admin.orders.index') }}" class="@if(request()->routeIs('admin.orders*')) active @endif">
                     🧾 Đơn Hàng
                 </a>
@@ -320,6 +355,16 @@
                 }
             });
         });
+
+        const productMenuToggle = document.getElementById('productMenuToggle');
+        const productSubmenu = document.querySelector('.sidebar-submenu');
+
+        if (productMenuToggle) {
+            productMenuToggle.addEventListener('click', function(event) {
+                event.preventDefault();
+                productSubmenu?.classList.toggle('show');
+            });
+        }
 
         // Close sidebar when clicking outside on mobile
         document.addEventListener('click', function(event) {

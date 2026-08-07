@@ -20,6 +20,8 @@ class Product extends Model
         'original_price',
         'sale_price',
         'type',
+        'cell_type',
+        'cell_number',
         'thumb_id',
         'specifications',
         'visible',

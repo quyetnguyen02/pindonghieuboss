@@ -15,6 +15,21 @@ class CategoryDisplayController extends Controller
         return view('Admin.category-display.edit', compact('categories'));
     }
 
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        Category::create([
+            'name' => $validated['name'],
+            'show_on_homepage' => false,
+        ]);
+
+        return redirect()->route('admin.category-display.edit')
+            ->with('success', 'Danh mục mới đã được tạo thành công');
+    }
+
     public function update(Request $request)
     {
         $validated = $request->validate([
