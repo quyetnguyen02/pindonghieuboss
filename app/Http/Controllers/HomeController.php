@@ -106,6 +106,9 @@ class HomeController extends Controller
         // get product by id
         $productModel = new Product;
         $product = $productModel->getProductById($id);
+        if (empty($product)) {
+            abort(404);
+        }
         $productPriceTierModel = new ProductPriceTier;
         $productPriceTier = $productPriceTierModel->getByProductId($product['id']);
 

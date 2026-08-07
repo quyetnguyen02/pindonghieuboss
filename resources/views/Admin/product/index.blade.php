@@ -12,6 +12,32 @@
         </a>
     </div>
 
+    <form action="{{ route('admin.products.index') }}" method="GET" class="card border-0 shadow-sm mb-3">
+        <div class="card-body">
+            <div class="row gy-3 gx-3 align-items-end">
+                <div class="col-12 col-md-5">
+                    <label class="form-label">Tìm kiếm sản phẩm</label>
+                    <input type="text" name="search" class="form-control"
+                           value="{{ request('search') }}"
+                           placeholder="Tên sản phẩm hoặc ID">
+                </div>
+                <div class="col-6 col-md-3">
+                    <label class="form-label">Giá từ</label>
+                    <input type="number" name="price_min" class="form-control"
+                           value="{{ request('price_min') }}" min="0" placeholder="0">
+                </div>
+                <div class="col-6 col-md-3">
+                    <label class="form-label">Giá đến</label>
+                    <input type="number" name="price_max" class="form-control"
+                           value="{{ request('price_max') }}" min="0" placeholder="0">
+                </div>
+                <div class="col-12 col-md-1 d-grid">
+                    <button type="submit" class="btn btn-primary">Lọc</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
     @if($errors->any())
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <ul class="mb-0 small">
@@ -74,7 +100,7 @@
                             </td>
                             <td class="d-none d-lg-table-cell">
                                 @php
-                                    $types = ['0' => 'Phụ Kiện', '1' => 'Pin', '2' => 'Điện'];
+                                    $types = ['0' => 'Cell Pin', '1' => 'Pin Đóng', '2' => 'Điện'];
                                 @endphp
                                 <small>{{ $types[$product->type] ?? '-' }}</small>
                             </td>

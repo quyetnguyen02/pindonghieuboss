@@ -126,12 +126,11 @@ class Product extends Model
         return $query->paginate(40)->withQueryString();
     }
 
-    public function getProductById(int $id): array
+    public function getProductById(int $id): array|null
     {
         return Product::with('image:id,src')
             ->where('id', $id)
             ->where('visible', 1)
-            ->first()
-            ->toArray();
+            ->first()?->toArray();
     }
 }

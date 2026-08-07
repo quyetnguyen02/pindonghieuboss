@@ -56,6 +56,7 @@
                             <option value="">-- Chọn Loại --</option>
                             <option value="0" {{ old('type') == '0' ? 'selected' : '' }}>Cell Pin</option>
                             <option value="1" {{ old('type') == '1' ? 'selected' : '' }}>Pin Đóng</option>
+                            <option value="2" {{ old('type') == '2' ? 'selected' : '' }}>Điện</option>
                         </select>
                         @error('type')
                             <span class="invalid-feedback">{{ $message }}</span>
@@ -121,6 +122,38 @@
                     </div>
                 </div>
 
+                <div id="price-tier-section" class="card border-0 bg-light mb-3 d-none">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="mb-0">Giá theo số lượng Cell</h6>
+                            <button type="button" class="btn btn-sm btn-primary" onclick="addPriceTierRow()">
+                                <i class="fas fa-plus"></i> Thêm mức giá
+                            </button>
+                        </div>
+
+                        <div id="price-tier-rows">
+                            @if(old('price_tiers_qty'))
+                                @foreach(old('price_tiers_qty') as $index => $quantity)
+                                    <div class="row g-2 align-items-end mb-2 price-tier-row">
+                                        <div class="col-md-4">
+                                            <label class="form-label">Số lượng tối thiểu</label>
+                                            <input type="number" name="price_tiers_qty[]" value="{{ $quantity }}" class="form-control form-control-sm" min="1" required>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Giá mỗi cell</label>
+                                            <input type="number" name="price_tiers_price[]" value="{{ old('price_tiers_price.' . $index) }}" class="form-control form-control-sm" min="0" step="0.01" required>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button type="button" class="btn btn-sm btn-danger w-100" onclick="removePriceTierRow(this)">Xóa</button>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @endif
+                        </div>
+                        <small class="text-muted">Nhập giá cho từng mức số lượng. Ví dụ: 10cell = 50k, 50cell = 47k, 100cell = 46k, 500cell = 56k.</small>
+                    </div>
+                </div>
+
                 <!-- Thông Số Sản Phẩm -->
                 <div class="card border-0 bg-light mb-3">
                     <div class="card-body">
@@ -132,24 +165,49 @@
                         </div>
 
                         <div id="specifications-container">
-                            <div class="specification-row mb-2">
-                                <div class="row g-2">
-                                    <div class="col-md-5">
-                                        <input type="text" class="form-control form-control-sm"
-                                               name="spec_keys[]" placeholder="Tên thông số (vd: Dung lượng, Màu sắc...)" value="">
+                            @if(old('spec_keys'))
+                                @foreach(old('spec_keys') as $index => $specKey)
+                                    <div class="specification-row mb-2">
+                                        <div class="row g-2">
+                                            <div class="col-md-5">
+                                                <input type="text" class="form-control form-control-sm"
+                                                       name="spec_keys[]" placeholder="Tên thông số (vd: Dung lượng, Màu sắc...)"
+                                                       value="{{ old('spec_keys.' . $index) }}">
+                                            </div>
+                                            <div class="col-md-5">
+                                                <input type="text" class="form-control form-control-sm"
+                                                       name="spec_values[]" placeholder="Giá trị (vd: 5000mAh, Đen...)"
+                                                       value="{{ old('spec_values.' . $index) }}">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <button type="button" class="btn btn-sm btn-danger w-100" onclick="removeSpecificationRow(this)">
+                                                    Xóa
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-5">
-                                        <input type="text" class="form-control form-control-sm"
-                                               name="spec_values[]" placeholder="Giá trị (vd: 5000mAh, Đen...)" value="">
-                                    </div>
-                                    <div class="col-md-2">
-                                        <button type="button" class="btn btn-sm btn-danger w-100" onclick="removeSpecificationRow(this)">
-                                            Xóa
-                                            <i class="fas fa-trash"></i>
-                                        </button>
+                                @endforeach
+                            @else
+                                <div class="specification-row mb-2">
+                                    <div class="row g-2">
+                                        <div class="col-md-5">
+                                            <input type="text" class="form-control form-control-sm"
+                                                   name="spec_keys[]" placeholder="Tên thông số (vd: Dung lượng, Màu sắc...)" value="">
+                                        </div>
+                                        <div class="col-md-5">
+                                            <input type="text" class="form-control form-control-sm"
+                                                   name="spec_values[]" placeholder="Giá trị (vd: 5000mAh, Đen...)" value="">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button type="button" class="btn btn-sm btn-danger w-100" onclick="removeSpecificationRow(this)">
+                                                Xóa
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -174,7 +232,7 @@ function previewImage(event) {
             imagePreview.innerHTML = `
                 <div class="alert alert-info py-2 px-3 small">
                     <strong>Xem trước:</strong>
-                    <img src='image/' + ${e.target.result} alt="Preview" style="max-width: 150px; max-height: 150px; border-radius: 4px; margin-top: 10px;">
+                    <img src="${e.target.result}" alt="Preview" style="max-width: 150px; max-height: 150px; border-radius: 4px; margin-top: 10px;">
                 </div>
             `;
         };
@@ -208,6 +266,69 @@ function addSpecificationRow() {
     `;
     container.appendChild(newRow);
 }
+
+function addPriceTierRow(quantity = '', price = '') {
+    const container = document.getElementById('price-tier-rows');
+    const row = document.createElement('div');
+    row.className = 'row g-2 align-items-end mb-2 price-tier-row';
+    row.innerHTML = `
+        <div class="col-md-4">
+            <label class="form-label">Số lượng tối thiểu</label>
+            <input type="number" name="price_tiers_qty[]" value="${quantity}" class="form-control form-control-sm" min="1" required>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Giá mỗi cell</label>
+            <input type="number" name="price_tiers_price[]" value="${price}" class="form-control form-control-sm" min="0" step="0.01" required>
+        </div>
+        <div class="col-md-2">
+            <button type="button" class="btn btn-sm btn-danger w-100" onclick="removePriceTierRow(this)">Xóa</button>
+        </div>
+    `;
+    container.appendChild(row);
+}
+
+function removePriceTierRow(button) {
+    button.closest('.price-tier-row').remove();
+}
+
+function isCellCategorySelected() {
+    const categorySelect = document.getElementById('category_id');
+
+    if (!categorySelect || !categorySelect.selectedOptions.length) {
+        return false;
+    }
+
+    return categorySelect.selectedOptions[0].textContent.toLowerCase().includes('cell');
+}
+
+function togglePriceTierSection() {
+    const typeValue = document.getElementById('type').value;
+    const section = document.getElementById('price-tier-section');
+
+    if (typeValue === '0' && isCellCategorySelected()) {
+        section.classList.remove('d-none');
+
+        const rows = document.querySelectorAll('.price-tier-row');
+        if (rows.length === 0) {
+            addPriceTierRow();
+        }
+    } else {
+        section.classList.add('d-none');
+    }
+}
+
+const typeSelect = document.getElementById('type');
+const categorySelect = document.getElementById('category_id');
+if (typeSelect) {
+    typeSelect.addEventListener('change', togglePriceTierSection);
+}
+if (categorySelect) {
+    categorySelect.addEventListener('change', togglePriceTierSection);
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    togglePriceTierSection();
+});
 
 function removeSpecificationRow(button) {
     button.closest('.specification-row').remove();
