@@ -390,7 +390,7 @@ function previewSubImages(event) {
                 col.className = 'col-6 col-md-3 col-lg-2';
                 col.innerHTML = `
                     <div class="card p-2 text-center border">
-                        <img src="image/ + ${e.target.result}" class="img-fluid rounded" style="height: 100px; object-fit: cover;">
+                        <img src="${e.target.result}" class="img-fluid rounded" style="height: 100px; object-fit: cover;">
                         <span class="badge bg-success mt-1">Ảnh mới</span>
                     </div>
                 `;
