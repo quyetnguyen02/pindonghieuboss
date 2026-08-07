@@ -2,6 +2,11 @@ const modal = document.getElementById("quickModal");
 const popup = document.querySelector(".popup-overlay");
 
 document.addEventListener('DOMContentLoaded', function () {
+    const modal1 = document.getElementById("quoteModal");
+    if (modal1) {
+        modal1.style.display = "none";
+    }
+
 
     document.querySelector(".popup-close").onclick = () => {
         popup.style.display = "none";
@@ -15,7 +20,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     }
 
-    // const modal = document.getElementById("quoteModal");
 
 
     document.getElementById("openQuote").onclick = () => {
@@ -34,7 +38,6 @@ document.addEventListener('DOMContentLoaded', function () {
         modal.onclick = function(e){
 
             if(e.target === modal){
-
                 popup.style.display = "none"
             }
 
