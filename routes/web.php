@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryDisplayController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
@@ -61,6 +62,11 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         ->name('admin.products.create');
     Route::post('/products', [ProductController::class, 'store'])
         ->name('admin.products.store');
+
+    Route::get('/category-display', [CategoryDisplayController::class, 'edit'])
+        ->name('admin.category-display.edit');
+    Route::put('/category-display', [CategoryDisplayController::class, 'update'])
+        ->name('admin.category-display.update');
     Route::get('/products/{product}/edit', [ProductController::class, 'edit'])
         ->name('admin.products.edit');
     Route::put('/products/{product}', [ProductController::class, 'update'])

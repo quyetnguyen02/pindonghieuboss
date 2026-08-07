@@ -9,6 +9,10 @@ class Category extends Model
 {
     protected $table = 'categories_p';
 
+    protected $casts = [
+        'show_on_homepage' => 'boolean',
+    ];
+
     public function getCategoryLists(): Collection
     {
         return $this->all();

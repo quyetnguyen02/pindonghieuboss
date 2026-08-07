@@ -264,6 +264,9 @@
                 <a href="{{ route('admin.banners') }}" class="@if(request()->routeIs('admin.banners*')) active @endif">
                     🖼️ Banner
                 </a>
+                <a href="{{ route('admin.category-display.edit') }}" class="@if(request()->routeIs('admin.category-display*')) active @endif">
+                    🧩 Hiển Thị Danh Mục
+                </a>
                 <a href="{{ route('admin.products.index') }}" class="@if(request()->routeIs('admin.products*')) active @endif">
                     📦 Sản Phẩm
                 </a>
