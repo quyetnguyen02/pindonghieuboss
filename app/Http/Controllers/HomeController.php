@@ -88,7 +88,7 @@ class HomeController extends Controller
             ->groupBy('category_id')
             ->toArray();
 
-        $cell_type = CellType::all()->pluck('name')->toArray();
+        $cell_type = CellType::all()->pluck('name', 'id')->toArray();
 
         return view('UserPage.search', [
             'keyword' => $keyword,
