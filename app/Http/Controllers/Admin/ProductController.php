@@ -134,7 +134,7 @@ class ProductController extends Controller
             'type' => $validated['type'],
             'cell_type' => $validated['type'] === '1' ? $validated['cell_type'] : null,
             'cell_number' => $validated['type'] === '1' ? $validated['cell_number'] : null,
-            'specifications' => ! empty($specifications) ? $specifications : null,
+            'specifications' => ! empty($specifications) ? json_encode($specifications, JSON_UNESCAPED_UNICODE) : null,
             'visible' => 1,
         ];
 
@@ -281,7 +281,7 @@ class ProductController extends Controller
                 'type' => $validated['type'],
                 'cell_type' => $validated['type'] === '1' ? $validated['cell_type'] : null,
                 'cell_number' => $validated['type'] === '1' ? $validated['cell_number'] : null,
-                'specifications' => ! empty($specifications) ? $specifications : null,
+                'specifications' => ! empty($specifications) ? json_encode($specifications, JSON_UNESCAPED_UNICODE) : null,
                 'visible' => $request->has('visible') ? 1 : 0,
             ]);
 

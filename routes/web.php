@@ -100,12 +100,13 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
 });
 Route::get('/debug', function () {
-    $thumbs = Thumb::all();
-    foreach ($thumbs as $thumb) {
-
-        $thumb->src = str_replace('-600x600', '', $thumb->src);
-        $thumb->save();
-
+    $products = \App\Models\Product::with('image:id,src')->where('visible', 1)->get();
+    foreach ($products as $product) {
+        if ($product->specifications === null) {
+            continue;
+        }
+        $product->specifications = json_encode($product->specifications, JSON_UNESCAPED_UNICODE);
+        $product->save();
     }
     dd('xong');
 
