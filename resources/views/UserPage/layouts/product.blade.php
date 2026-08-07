@@ -53,7 +53,7 @@
                                 <span class="new-price">{{number_format($product['original_price'])}}đ</span>
                             @endif
                         @else
-                            Liên Hệ Ngay {{$shop->zalo}}
+                            Liên Hệ Ngay {{$shop->hotline}}
                         @endif
 
                     </div>

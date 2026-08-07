@@ -115,7 +115,7 @@
                             </svg>
 
                             <span>GỌI NGAY:</span>
-                            <strong>0379 382 294</strong>
+                            <strong>{{$shop['hotline']}}</strong>
                         </a>
                     @endif
 
