@@ -13,7 +13,7 @@ class ShopController extends Controller
     {
         $shopInfo = Shop::first() ?? new Shop;
 
-        return view('admin.shop.edit', compact('shopInfo'));
+        return view('Admin.shop.edit', compact('shopInfo'));
     }
 
     public function updateShopInfo(Request $request)
@@ -39,14 +39,26 @@ class ShopController extends Controller
     {
         $banners = Banner::latest()->get();
 
-        return view('admin.shop.banners', compact('banners'));
+        return view('Admin.shop.banners', compact('banners'));
     }
 
     public function storeBanner(Request $request)
     {
         $validated = $request->validate([
-            'src' => 'required|string',
+            'src' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,gif,webp,jpg|max:5120',
+            'display' => 'nullable|boolean',
         ]);
+
+        // if uploaded file, move to public/image and set src to filename
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('image'), $filename);
+            $validated['src'] = $filename;
+        }
+
+        $validated['display'] = $request->has('display') ? 1 : 0;
 
         Banner::create($validated);
 
@@ -55,8 +67,21 @@ class ShopController extends Controller
 
     public function deleteBanner(Banner $banner)
     {
+        // remove file from public/image if exists
+        if ($banner->src && file_exists(public_path('image/' . $banner->src))) {
+            @unlink(public_path('image/' . $banner->src));
+        }
+
         $banner->delete();
 
         return redirect()->route('admin.banners')->with('success', 'Xóa banner thành công');
+    }
+
+    public function toggleBanner(Banner $banner)
+    {
+        $banner->display = $banner->display ? 0 : 1;
+        $banner->save();
+
+        return redirect()->route('admin.banners')->with('success', 'Cập nhật trạng thái hiển thị banner thành công');
     }
 }

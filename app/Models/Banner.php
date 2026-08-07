@@ -11,11 +11,11 @@ class Banner extends Model
 
     protected $fillable = [
         'src',
+        'display',
     ];
 
     public function getBannersDisplay(): Collection
     {
-        return Banner::all();
-
+        return Banner::where('display', 1)->get();
     }
 }

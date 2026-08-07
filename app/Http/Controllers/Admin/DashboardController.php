@@ -21,6 +21,6 @@ class DashboardController extends Controller
         $recentProducts = Product::with('image')->latest()->take(5)->get();
         $shopInfo = Shop::first();
 
-        return view('admin.dashboard', compact('stats', 'recentProducts', 'shopInfo'));
+        return view('Admin.dashboard', compact('stats', 'recentProducts', 'shopInfo'));
     }
 }

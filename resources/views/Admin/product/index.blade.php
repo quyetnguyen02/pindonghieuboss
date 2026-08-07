@@ -1,118 +1,122 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid mt-5">
-    <div class="row">
-        <div class="col-md-12">
-            <h1>Quản Lý Sản Phẩm</h1>
-
-            @if($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
-            @if(session('success'))
-                <div class="alert alert-success">{{ session('success') }}</div>
-            @endif
-
-            <div class="mb-3">
-                <a href="{{ route('admin.products.create') }}" class="btn btn-success btn-lg">
-                    + Thêm Sản Phẩm Mới
-                </a>
-            </div>
-
-            <div class="table-responsive">
-                <table class="table table-striped table-hover">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>ID</th>
-                            <th>Tên Sản Phẩm</th>
-                            <th>Hình Ảnh</th>
-                            <th>Giá Niêm Yết</th>
-                            <th>Giá Khuyến Mãi</th>
-                            <th>Chiết Khấu</th>
-                            <th>Loại</th>
-                            <th>Danh Mục</th>
-                            <th>Ngày Tạo</th>
-                            <th>Hành Động</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($products as $product)
-                            <tr>
-                                <td>{{ $product->id }}</td>
-                                <td>
-                                    <strong>{{ $product->name }}</strong>
-                                </td>
-                                <td>
-                                    @if($product->image)
-                                        <img src="{{ $product->image->src }}" alt="{{ $product->name }}" 
-                                             style="max-width: 60px; max-height: 60px; border-radius: 4px;">
-                                    @else
-                                        <span class="text-muted">Không có ảnh</span>
-                                    @endif
-                                </td>
-                                <td>{{ number_format($product->original_price, 0, '.', ',') }} đ</td>
-                                <td>
-                                    @if($product->sale_price)
-                                        {{ number_format($product->sale_price, 0, '.', ',') }} đ
-                                    @else
-                                        <span class="text-muted">-</span>
-                                    @endif
-                                </td>
-                                <td>
-                                    @if($product->discount_percent > 0)
-                                        <span class="badge bg-danger">-{{ $product->discount_percent }}%</span>
-                                    @else
-                                        <span class="text-muted">-</span>
-                                    @endif
-                                </td>
-                                <td>
-                                    @php
-                                        $types = ['0' => 'Phụ Kiện', '1' => 'Pin', '2' => 'Điện'];
-                                    @endphp
-                                    {{ $types[$product->type] ?? 'Không xác định' }}
-                                </td>
-                                <td>{{ $product->category_id }}</td>
-                                <td>{{ $product->created_at->format('d/m/Y H:i') }}</td>
-                                <td>
-                                    <a href="{{ route('admin.products.edit', $product) }}" 
-                                       class="btn btn-warning btn-sm">Sửa</a>
-                                    <form action="{{ route('admin.products.destroy', $product) }}" method="POST" 
-                                          class="d-inline" 
-                                          onsubmit="return confirm('Xác nhận xóa sản phẩm này?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="10" class="text-center text-muted py-5">
-                                    Chưa có sản phẩm nào. <a href="{{ route('admin.products.create') }}">Thêm sản phẩm ngay</a>
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Pagination -->
-            <nav aria-label="Page navigation">
-                {{ $products->links() }}
-            </nav>
-
-            <div class="mt-4">
-                <a href="{{ route('admin.shop.edit') }}" class="btn btn-secondary">Thông Tin Shop</a>
-                <a href="{{ route('admin.banners') }}" class="btn btn-secondary">Quản Lý Banner</a>
-            </div>
+<div>
+    <div class="mb-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div>
+            <h1 class="h3 mb-1">Quản Lý Sản Phẩm</h1>
+            <p class="text-muted small mb-0">Danh sách {{ $products->total() }} sản phẩm</p>
         </div>
+        <a href="{{ route('admin.products.create') }}" class="btn btn-success btn-sm">
+            + Thêm Mới
+        </a>
+    </div>
+
+    @if($errors->any())
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <ul class="mb-0 small">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    <div class="card border-0 shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0 small">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên</th>
+                        <th class="d-none d-sm-table-cell">Giá</th>
+                        <th class="d-none d-md-table-cell">Khuyến Mãi</th>
+                        <th class="d-none d-lg-table-cell">Loại</th>
+                        <th class="d-none d-xl-table-cell">Ngày Tạo</th>
+                        <th>Hành Động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($products as $product)
+                        <tr>
+                            <td><small class="text-muted">{{ $product->id }}</small></td>
+                            <td>
+                                <div class="d-flex align-items-center gap-2">
+                                    @if($product->image)
+                                        <img src="{{ asset('/image/' . data_get($product, 'image.src', 'images/no-image.png'))}}" alt="{{ $product->name }}"
+                                             style="width: 30px; height: 30px; object-fit: cover; border-radius: 3px;">
+                                    @endif
+                                    <span class="text-truncate" title="{{ $product->name }}">
+                                        {{ Str::limit($product->name, 25) }}
+                                    </span>
+                                    @if(! $product->visible)
+                                        <span class="badge bg-secondary ms-2">Ẩn</span>
+                                    @endif
+                                </div>
+                            </td>
+                            <td class="d-none d-sm-table-cell">
+                                <small>{{ number_format($product->original_price, 0) }}đ</small>
+                            </td>
+                            <td class="d-none d-md-table-cell">
+                                @if($product->sale_price)
+                                    <small class="badge bg-info">{{ number_format($product->sale_price, 0) }}đ</small>
+                                @else
+                                    <small class="text-muted">-</small>
+                                @endif
+                            </td>
+                            <td class="d-none d-lg-table-cell">
+                                @php
+                                    $types = ['0' => 'Phụ Kiện', '1' => 'Pin', '2' => 'Điện'];
+                                @endphp
+                                <small>{{ $types[$product->type] ?? '-' }}</small>
+                            </td>
+                            <td class="d-none d-xl-table-cell">
+                                <small>{{ $product->created_at->format('d/m/Y') }}</small>
+                            </td>
+                            <td>
+                                <div class="d-flex gap-1 flex-wrap">
+                                    <a href="{{ route('admin.products.edit', $product) }}"
+                                       class="btn btn-warning btn-sm" title="Sửa">
+                                        <small>Sửa</small>
+                                    </a>
+                                    <form action="{{ route('admin.products.toggle', $product) }}" method="POST" class="d-inline"
+                                          onsubmit="return confirm('{{ $product->visible ? 'Ẩn sản phẩm này? (sẽ không hiển thị trên trang khách hàng)' : 'Hiển thị lại sản phẩm này?'}}');">
+                                        @csrf
+                                        <button type="submit" class="btn btn-sm {{ $product->visible ? 'btn-warning' : 'btn-success' }}" title="{{ $product->visible ? 'Ẩn' : 'Hiển thị' }}">
+                                            <small>{{ $product->visible ? 'Ẩn' : 'Hiển thị' }}</small>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="7" class="text-center py-5 text-muted">
+                                <p class="mb-2">Chưa có sản phẩm nào</p>
+                                <a href="{{ route('admin.products.create') }}" class="btn btn-primary btn-sm">
+                                    Thêm sản phẩm ngay
+                                </a>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="mt-3 d-flex justify-content-center">
+        <nav aria-label="Product pagination">
+            {{ $products->onEachSide(1)->links('pagination::bootstrap-5') }}
+        </nav>
     </div>
 </div>
 @endsection
