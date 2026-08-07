@@ -188,6 +188,7 @@ class ProductController extends Controller
 
         $subThumbs = ! empty($subThumbIds) ? Thumb::whereIn('id', $subThumbIds)->get() : collect();
 
+        $product->specifications = ! empty($product->specifications) ? json_decode($product->specifications, true) : [];
 
         return view('Admin.product.edit', compact('product', 'categories', 'cellTypes', 'subThumbs', 'priceTiers'));
     }
