@@ -76,7 +76,6 @@ class Product extends Model
 
     public function searchProducts(?string $keyword, $price, $cell, $cell_type, $category_id): AbstractPaginator|LengthAwarePaginator
     {
-        //        dd($keyword, $price, $cell, $cell_type, $category_id);
         $query = Product::with('image')->where('visible', 1);
         // Search keyword
 
@@ -125,8 +124,7 @@ class Product extends Model
             $query->where('category_id', $category_id);
         }
 
-        //        dd($query->toSql(), $keyword, $price, $cell, $cell_type, $category_id);
-        return $query->paginate(40)->withQueryString();
+        return $query->orderBy('category_id')->paginate(40)->withQueryString();
     }
 
     public function getProductById(int $id): array|null
