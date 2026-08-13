@@ -19,9 +19,15 @@
 
     <div class="card border-0 shadow-sm mb-4">
         <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                <h5 class="mb-0">Thông tin khách hàng</h5>
+                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#order-info-form">
+                    Sửa thông tin
+                </button>
+            </div>
+
             <div class="row g-3">
                 <div class="col-12 col-md-6">
-                    <h5 class="mb-2">Thông tin khách hàng</h5>
                     <p class="mb-1"><strong>Họ tên:</strong> {{ $order->customer_name }}</p>
                     <p class="mb-1"><strong>SĐT:</strong> {{ $order->phone }}</p>
                     <p class="mb-1"><strong>Địa chỉ:</strong> {{ $order->address }}</p>
@@ -32,6 +38,32 @@
                     <p class="mb-1"><strong>Tổng tiền:</strong> {{ number_format($order->total_price, 0) }}đ</p>
                     <p class="mb-1"><strong>Ngày tạo:</strong> {{ $order->created_at->format('d/m/Y H:i') }}</p>
                 </div>
+            </div>
+
+            <div id="order-info-form" class="collapse mt-3">
+                <form action="{{ route('admin.orders.info.update', $order) }}" method="POST" class="border rounded p-3 bg-light">
+                    @csrf
+                    @method('PUT')
+                    <div class="row g-3 align-items-end">
+                        <div class="col-12 col-md-4">
+                            <label class="form-label small">Số điện thoại</label>
+                            <input type="text" name="phone" value="{{ old('phone', $order->phone) }}" class="form-control form-control-sm" maxlength="20" required>
+                            @error('phone')
+                                <div class="text-danger small mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="form-label small">Địa chỉ</label>
+                            <input type="text" name="address" value="{{ old('address', $order->address) }}" class="form-control form-control-sm" maxlength="255" required>
+                            @error('address')
+                                <div class="text-danger small mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="col-12 col-md-2">
+                            <button type="submit" class="btn btn-primary btn-sm w-100">Lưu</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

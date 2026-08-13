@@ -91,6 +91,8 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         ->name('admin.orders.index');
     Route::get('/orders/{order}', [OrderController::class, 'show'])
         ->name('admin.orders.show');
+    Route::put('/orders/{order}/info', [OrderController::class, 'updateInfo'])
+        ->name('admin.orders.info.update');
     Route::put('/orders/{order}/status', [OrderController::class, 'updateStatus'])
         ->name('admin.orders.status.update');
     Route::post('/orders/{order}/items', [OrderController::class, 'addItem'])

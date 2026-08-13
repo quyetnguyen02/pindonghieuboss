@@ -119,6 +119,22 @@ class OrderController extends Controller
         $order->update(['total_price' => $total]);
     }
 
+    public function updateInfo(Request $request, Order $order)
+    {
+        $validated = $request->validate([
+            'phone' => ['required', 'string', 'max:20'],
+            'address' => ['required', 'string', 'max:255'],
+        ]);
+
+        $order->update([
+            'phone' => trim($validated['phone']),
+            'address' => trim($validated['address']),
+        ]);
+
+        return redirect()->route('admin.orders.show', $order)
+            ->with('success', 'Cập nhật thông tin khách hàng thành công.');
+    }
+
     public function updateStatus(Request $request, Order $order)
     {
         $validated = $request->validate([
