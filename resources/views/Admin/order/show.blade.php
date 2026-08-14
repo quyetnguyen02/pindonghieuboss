@@ -90,7 +90,7 @@
                         @foreach($order->items as $item)
                             <tr>
                                 <td>{{ $item->id }}</td>
-                                <td>{{ $item->product->name ?? '---' }}</td>
+                                <td>{{ $order->web === 1 ? ($item->hukan->name ?? '---') : ($item->product->name ?? '---') }}</td>
                                 <td>{{ $item->qty }}</td>
                                 <td>{{ number_format($item->price, 0) }}đ</td>
                                 <td>{{ number_format($item->price * $item->qty, 0) }}đ</td>
@@ -124,6 +124,7 @@
                         <select name="product_id" class="form-select form-select-sm" required>
                             <option value="">Chọn sản phẩm</option>
                             @foreach($products as $product)
+                            {{-- @dd($product) --}}
                                 <option value="{{ $product->id }}">{{ $product->name }} - {{ number_format($product->sale_price ?: $product->original_price, 0) }}đ</option>
                             @endforeach
                         </select>

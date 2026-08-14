@@ -57,6 +57,7 @@
                 <thead class="table-light">
                     <tr>
                         <th>ID</th>
+                         <th>Web</th>
                         <th>Khách hàng</th>
                         <th>SĐT</th>
                         <th>Tổng tiền</th>
@@ -69,6 +70,7 @@
                     @forelse($orders as $order)
                         <tr>
                             <td>{{ $order->id }}</td>
+                            <td>@if($order->web === 1) Pin Đóng Hiếu Boss @else Hukan VN @endif</td>
                             <td>{{ $order->customer_name }}</td>
                             <td>{{ $order->phone }}</td>
                             <td>{{ number_format($order->total_price, 0) }}đ</td>

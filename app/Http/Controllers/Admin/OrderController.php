@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\ProductP;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -61,8 +62,23 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
-        $order->load('items.product');
-        $products = Product::select(['id', 'name', 'original_price', 'sale_price'])->orderBy('name')->get();
+
+        if ($order->web === 1) {
+        
+            $productModel = new ProductP();
+            $order->load('items.hukan');
+
+            
+        } else {
+            
+            $productModel = new Product();
+            $order->load('items.product');
+        }
+
+
+
+        $products = $productModel->select(['id', 'name', 'original_price', 'sale_price'])->orderBy('name')->get();
+    
 
         return view('Admin.order.show', compact('order', 'products'));
     }
