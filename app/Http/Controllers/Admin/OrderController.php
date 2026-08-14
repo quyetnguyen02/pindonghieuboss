@@ -63,7 +63,7 @@ class OrderController extends Controller
     public function show(Order $order)
     {
 
-        if ($order->web === 1) {
+        if ($order->web !== 1) {
         
             $productModel = new ProductP();
             $order->load('items.hukan');

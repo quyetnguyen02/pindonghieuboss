@@ -90,7 +90,7 @@
                         @foreach($order->items as $item)
                             <tr>
                                 <td>{{ $item->id }}</td>
-                                <td>{{ $order->web === 1 ? ($item->hukan->name ?? '---') : ($item->product->name ?? '---') }}</td>
+                                <td>{{ $order->web !== 1 ? ($item->hukan->name ?? '---') : ($item->product->name ?? '---') }}</td>
                                 <td>{{ $item->qty }}</td>
                                 <td>{{ number_format($item->price, 0) }}đ</td>
                                 <td>{{ number_format($item->price * $item->qty, 0) }}đ</td>
