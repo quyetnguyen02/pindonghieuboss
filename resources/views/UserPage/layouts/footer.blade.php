@@ -131,10 +131,6 @@
             <p>Vui lòng để lại thông tin, chúng tôi sẽ liên hệ lại ngay!</p>
         </div>
 
-        <div class="popup-banner">
-            <img src="{{ asset('image/z6459770787932_32ef601e85b3ef311605fc825bcd5c15.jpg') }}" alt="">
-        </div>
-
         <form id="consultForm" class="popup-form">
             @csrf
             <input
